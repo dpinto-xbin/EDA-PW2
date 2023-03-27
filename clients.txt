@@ -1,0 +1,4 @@
+John Smith,1000.00,123456789,123 Main St,555-1234,john.smith@example.com
+Jane Doe,5000.00,987654321,456 Oak Ave,555-5678,jane.doe@example.com
+Bob Johnson,2500.00,456789123,789 Maple Rd,555-9012,bob.johnson@example.com
+Alice Williams,7500.00,654321987,321 Elm St,555-3456,alice.williams@example.com

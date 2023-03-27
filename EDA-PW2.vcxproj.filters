@@ -32,5 +32,13 @@
     <ClInclude Include="Rentings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Prices.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="clients.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

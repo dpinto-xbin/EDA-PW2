@@ -132,8 +132,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clients.h" />
+    <ClInclude Include="Prices.h" />
     <ClInclude Include="Rentings.h" />
     <ClInclude Include="Transports.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="clients.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
