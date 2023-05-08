@@ -21,6 +21,9 @@
     <ClCompile Include="Clients.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Pickups.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clients.h">
@@ -38,6 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="clients.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="nodes.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="edges.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
