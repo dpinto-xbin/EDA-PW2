@@ -15,10 +15,12 @@
 #include <stdbool.h>
 #include "Rentings.h"
 #define MAX_LINE_SIZE 100
+#include <math.h>
+#define PI 3.14159265358979323846
+#define EARTH_RADIUS 6371.0 // Raio médio da Terra em quilômetros
 #pragma endregion
 
-
-#pragma region READ_FILES
+#pragma region READ_NODES
 Node* read_nodes_from_file()
 {
     Node* nodes_head = NULL;
@@ -67,7 +69,11 @@ Node* read_nodes_from_file()
     return nodes_head;
 }
 
-Edge* read_edges_from_file()
+#pragma endregion
+
+#pragma region READ_EDGES
+
+Edge* read_edges_from_file(Node* nodes_head)
 {
     Edge* edges_head = NULL;
     FILE* file = fopen("edges.txt", "r");
@@ -82,22 +88,35 @@ Edge* read_edges_from_file()
     while (fgets(line, MAX_LINE_SIZE, file) != NULL)
     {
         char* token = strtok(line, ",");
-        Edge* new_edge = (Edge*)malloc(sizeof(Edge));
-
-        new_edge->distance = atof(token);
+        int source_node_id = atoi(token);
 
         token = strtok(NULL, ",");
-        new_edge->destination = atoi(token);
+        int destination_node_id = atoi(token);
 
+        token = strtok(NULL, ",");
+        double distance = atof(token);
+
+        Edge* new_edge = (Edge*)malloc(sizeof(Edge));
+        new_edge->distance = distance;
+        new_edge->destination = destination_node_id;
         new_edge->next = NULL;
 
-        if (edges_head == NULL)
+        // Find the corresponding source node
+        Node* source_node = find_node_by_id(source_node_id, nodes_head);
+        if (source_node == NULL)
         {
-            edges_head = new_edge;
+            printf("Error: Source node with ID %d not found.\n", source_node_id);
+            continue;  // Skip this edge and proceed to the next line
+        }
+
+        // Attach the new edge to the source node
+        if (source_node->Adj == NULL)
+        {
+            source_node->Adj = new_edge;
         }
         else
         {
-            Edge* current = edges_head;
+            Edge* current = source_node->Adj;
             while (current->next != NULL)
             {
                 current = current->next;
@@ -110,6 +129,28 @@ Edge* read_edges_from_file()
 
     return edges_head;
 }
+
+#pragma endregion
+
+#pragma region FIND_NODE_ID
+
+Node* find_node_by_id(int node_id, Node* nodes_head)
+{
+    Node* current = nodes_head;  // Assuming the linked list of nodes is accessible as "nodes_head"
+
+    while (current != NULL)
+    {
+        if (current->idNode == node_id)
+        {
+            return current;  // Found the node with the specified ID
+        }
+        current = current->next;
+    }
+
+    return NULL;  // Node with the specified ID not found
+}
+
+
 #pragma endregion
 
 #pragma region LIST_NODES
@@ -124,4 +165,106 @@ void print_nodes(Node* nodes_head)
         current_node = current_node->next;
     }
 }
+#pragma endregion
+
+#pragma region LIST_NODES_WITH_EDGES
+
+void list_nodes_with_edges(Node* nodes_head)
+{
+    Node* current = nodes_head;
+
+    while (current != NULL)
+    {
+        printf("Node ID: %d\n", current->idNode);
+        printf("Latitude: %f\n", current->latitude);
+        printf("Longitude: %f\n", current->longitude);
+        printf("Edges:\n");
+
+        Edge* edge = current->Adj;
+        while (edge != NULL)
+        {
+            printf("    Destination: %d, Distance: %.2f\n", edge->destination, edge->distance);
+            edge = edge->next;
+        }
+
+        printf("\n");
+
+        current = current->next;
+    }
+}
+
+
+#pragma endregion
+
+#pragma region FREE_NODES
+void free_nodes_list(Node* nodes_head)
+{
+    Node* current_node = nodes_head;
+    while (current_node != NULL)
+    {
+        Node* next_node = current_node->next;
+        free(current_node);
+        current_node = next_node;
+    }
+}
+#pragma endregion
+
+#pragma region FREE_EDGES
+void free_edges_list(Edge* edges_head)
+{
+    Node* current_edge = edges_head;
+    while (current_edge != NULL)
+    {
+        Node* next_edge = current_edge->next;
+        free(current_edge);
+        current_edge = next_edge;
+    }
+}
+#pragma endregion
+
+#pragma region SEARCH_PICKUP_POINTS
+
+
+// Função para calcular a distância entre duas coordenadas de latitude e longitude usando a fórmula de Haversine
+double haversine_distance(double lat1, double lon1, double lat2, double lon2)
+{
+
+    printf("\nLAT1: %f \nLON1: %f \nLAT2: %f \nLON2: %f", lat1, lon1, lat2, lon2);
+    double dlat = (lat2 - lat1) * PI / 180.0;
+    double dlon = (lon2 - lon1) * PI / 180.0;
+
+    double a = sin(dlat / 2) * sin(dlat / 2) +
+        cos(lat1 * PI / 180.0) * cos(lat2 * PI / 180.0) *
+        sin(dlon / 2) * sin(dlon / 2);
+
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    double distance = EARTH_RADIUS * c;
+    printf("\nDISTANCIA: %f", distance);
+    return distance;
+}
+
+// Função para encontrar nós dentro de um raio de 5 km de uma determinada latitude e longitude
+void find_nodes_within_radius(Node* nodes_head, double target_latitude, double target_longitude)
+{
+    Node* current = nodes_head;
+
+    while (current != NULL)
+    {
+        double distance = haversine_distance(target_latitude, target_longitude,
+            current->latitude, current->longitude);
+
+        if (distance <= 5.0) // Verificar se a distância está dentro do raio de 5 km
+        {
+            printf("Node ID: %d\n", current->idNode);
+            printf("Latitude: %f\n", current->latitude);
+            printf("Longitude: %f\n", current->longitude);
+            printf("Distance: %f km\n\n", distance);
+        }
+
+        current = current->next;
+    }
+}
+
+
 #pragma endregion

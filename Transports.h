@@ -18,7 +18,7 @@ typedef struct Transport {
     float battery;
     float autonomy;
     int status; // 1 - Maintenance | 2 - MIA (Missing in Action) | 3 - Rented | 4 - Available |
-    char geolocation[GEOLOCATION_SIZE];
+    int location;
 
 } Transport;
 #pragma endregion
@@ -33,3 +33,9 @@ typedef struct Transports {
 
 } Transports;
 #pragma endregion
+
+
+
+Transports* read_transports_from_file();
+Transports* add_transport(Transports* transports_head, Transport new_transport);
+void print_transports(Transports* transports_head);

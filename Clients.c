@@ -90,7 +90,7 @@ void print_clients(Clients* clients_head)
 }
 #pragma endregion
 
-#pragma region FREE_DLL
+#pragma region FREE_CLIENTS
 void free_clients_list(Clients* clients_head)
 {
     Clients* current_node = clients_head;

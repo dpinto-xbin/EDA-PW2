@@ -3,8 +3,8 @@
 #pragma region GRAPH_STRUCT
 typedef struct Node {
 	int idNode;
-	float longitude;
-	float latitude;
+	double longitude;
+	double latitude;
 	struct Node* next;
 	struct Edge* Adj;
 } Node;
@@ -46,3 +46,10 @@ typedef struct Pickup {
 Node* read_nodes_from_file();
 Edge* read_edges_from_file();
 void print_nodes(Node* nodes_head);
+Edge* read_edges_from_file(Node* nodes_head);
+Node* find_node_by_id(int node_id, Node* nodes_head);
+void list_nodes_with_edges(Node* nodes_head);
+void free_edges_list(Edge* edges_head);
+void free_nodes_list(Node* nodes_head);
+double haversine_distance(double lat1, double lon1, double lat2, double lon2);
+void find_nodes_within_radius(Node* nodes_head, double target_latitude, double target_longitude);

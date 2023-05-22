@@ -1,7 +1,7 @@
 #pragma once
 typedef struct Prices {
 
-    int idTransport;
+    int type;
     float price;
     char date;
 
