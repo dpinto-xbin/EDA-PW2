@@ -41,10 +41,10 @@ Node* read_nodes_from_file()
         new_node->idNode = atoi(token);
 
         token = strtok(NULL, ",");
-        new_node->longitude = atof(token);
+        new_node->latitude = atof(token);
 
         token = strtok(NULL, ",");
-        new_node->latitude = atof(token);
+        new_node->longitude = atof(token);
 
         new_node->next = NULL;
         new_node->Adj = NULL;
@@ -225,11 +225,9 @@ void free_edges_list(Edge* edges_head)
 #pragma region SEARCH_PICKUP_POINTS
 
 
-// Função para calcular a distância entre duas coordenadas de latitude e longitude usando a fórmula de Haversine
+
 double haversine_distance(double lat1, double lon1, double lat2, double lon2)
 {
-
-    printf("\nLAT1: %f \nLON1: %f \nLAT2: %f \nLON2: %f", lat1, lon1, lat2, lon2);
     double dlat = (lat2 - lat1) * PI / 180.0;
     double dlon = (lon2 - lon1) * PI / 180.0;
 
@@ -240,9 +238,11 @@ double haversine_distance(double lat1, double lon1, double lat2, double lon2)
     double c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
     double distance = EARTH_RADIUS * c;
-    printf("\nDISTANCIA: %f", distance);
+    printf("\nDISTANCIA: %f km", distance);
     return distance;
 }
+
+
 
 // Função para encontrar nós dentro de um raio de 5 km de uma determinada latitude e longitude
 void find_nodes_within_radius(Node* nodes_head, double target_latitude, double target_longitude)
@@ -251,8 +251,9 @@ void find_nodes_within_radius(Node* nodes_head, double target_latitude, double t
 
     while (current != NULL)
     {
-        double distance = haversine_distance(target_latitude, target_longitude,
-            current->latitude, current->longitude);
+
+        double distance = haversine_distance(target_latitude, target_longitude, current->latitude, current->longitude);
+
 
         if (distance <= 5.0) // Verificar se a distância está dentro do raio de 5 km
         {
@@ -268,3 +269,5 @@ void find_nodes_within_radius(Node* nodes_head, double target_latitude, double t
 
 
 #pragma endregion
+
+

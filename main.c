@@ -22,6 +22,9 @@ int main()
 	Transports* transports_head = NULL;
 	Prices* prices_head = NULL;
 
+	double lat = 41.535610;
+	double lon = -8.627301;
+
 	
 	clients_head = read_clients_from_file(); // Reads clients
 	transports_head = read_transports_from_file(); // Reads transports
@@ -34,7 +37,8 @@ int main()
 	//list_nodes_with_edges(nodes_head);
 	//print_transports(transports_head);
 
-	find_nodes_within_radius(nodes_head, 41.535610, -8.628196);
+	find_nodes_within_radius(nodes_head, lat, lon);
+	//haversine_distance(lat,lon, 41.536719, -8.627301);
 
 
 	// FREE DLL
