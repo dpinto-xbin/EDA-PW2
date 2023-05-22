@@ -34,8 +34,8 @@ typedef struct Transports {
 } Transports;
 #pragma endregion
 
-
-
+#pragma region FUNCTIONS
 Transports* read_transports_from_file();
 Transports* add_transport(Transports* transports_head, Transport new_transport);
 void print_transports(Transports* transports_head);
+#pragma endregion

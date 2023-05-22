@@ -41,7 +41,7 @@ typedef struct Pickup {
 
 #pragma endregion
 
-
+#pragma region FUNCTIONS
 
 Node* read_nodes_from_file();
 Edge* read_edges_from_file();
@@ -53,3 +53,9 @@ void free_edges_list(Edge* edges_head);
 void free_nodes_list(Node* nodes_head);
 double haversine_distance(double lat1, double lon1, double lat2, double lon2);
 void find_nodes_within_radius(Node* nodes_head, double target_latitude, double target_longitude);
+
+void dijkstra(Node* graph, int source);
+void printShortestPath(int parent[], int node);
+int findMinDistanceNode(int* dist, int* visited, int numNodes);
+
+#pragma endregion

@@ -21,6 +21,11 @@
 #pragma endregion
 
 #pragma region READ_NODES
+/**
+ * \brief Read graph nodes from file
+ * 
+ * \return 
+ */
 Node* read_nodes_from_file()
 {
     Node* nodes_head = NULL;
@@ -73,6 +78,13 @@ Node* read_nodes_from_file()
 
 #pragma region READ_EDGES
 
+/**
+ * \brief Reads graph edges and with nodes_head inserts them onto the graph
+ * 
+ * \param nodes_head
+ * \return 
+ */
+
 Edge* read_edges_from_file(Node* nodes_head)
 {
     Edge* edges_head = NULL;
@@ -96,11 +108,6 @@ Edge* read_edges_from_file(Node* nodes_head)
         token = strtok(NULL, ",");
         double distance = atof(token);
 
-        Edge* new_edge = (Edge*)malloc(sizeof(Edge));
-        new_edge->distance = distance;
-        new_edge->destination = destination_node_id;
-        new_edge->next = NULL;
-
         // Find the corresponding source node
         Node* source_node = find_node_by_id(source_node_id, nodes_head);
         if (source_node == NULL)
@@ -109,10 +116,29 @@ Edge* read_edges_from_file(Node* nodes_head)
             continue;  // Skip this edge and proceed to the next line
         }
 
-        // Attach the new edge to the source node
+        // Find the corresponding destination node
+        Node* destination_node = find_node_by_id(destination_node_id, nodes_head);
+        if (destination_node == NULL)
+        {
+            printf("Error: Destination node with ID %d not found.\n", destination_node_id);
+            continue;  // Skip this edge and proceed to the next line
+        }
+
+        // Create new edges for both directions
+        Edge* new_edge_source = (Edge*)malloc(sizeof(Edge));
+        new_edge_source->distance = distance;
+        new_edge_source->destination = destination_node_id;
+        new_edge_source->next = NULL;
+
+        Edge* new_edge_destination = (Edge*)malloc(sizeof(Edge));
+        new_edge_destination->distance = distance;
+        new_edge_destination->destination = source_node_id;
+        new_edge_destination->next = NULL;
+
+        // Attach the new edges to the respective nodes
         if (source_node->Adj == NULL)
         {
-            source_node->Adj = new_edge;
+            source_node->Adj = new_edge_source;
         }
         else
         {
@@ -121,7 +147,21 @@ Edge* read_edges_from_file(Node* nodes_head)
             {
                 current = current->next;
             }
-            current->next = new_edge;
+            current->next = new_edge_source;
+        }
+
+        if (destination_node->Adj == NULL)
+        {
+            destination_node->Adj = new_edge_destination;
+        }
+        else
+        {
+            Edge* current = destination_node->Adj;
+            while (current->next != NULL)
+            {
+                current = current->next;
+            }
+            current->next = new_edge_destination;
         }
     }
 
@@ -133,6 +173,14 @@ Edge* read_edges_from_file(Node* nodes_head)
 #pragma endregion
 
 #pragma region FIND_NODE_ID
+
+/**
+ * \brief Finds the nodeID inside the graph
+ * 
+ * \param node_id
+ * \param nodes_head
+ * \return 
+ */
 
 Node* find_node_by_id(int node_id, Node* nodes_head)
 {
@@ -154,6 +202,11 @@ Node* find_node_by_id(int node_id, Node* nodes_head)
 #pragma endregion
 
 #pragma region LIST_NODES
+/**
+ * \brief Lists all the nodes
+ * 
+ * \param nodes_head
+ */
 void print_nodes(Node* nodes_head)
 {
     Node* current_node = nodes_head;
@@ -168,6 +221,12 @@ void print_nodes(Node* nodes_head)
 #pragma endregion
 
 #pragma region LIST_NODES_WITH_EDGES
+
+/**
+ * \brief Lists all the nodes with edges included
+ * 
+ * \param nodes_head
+ */
 
 void list_nodes_with_edges(Node* nodes_head)
 {
@@ -225,7 +284,15 @@ void free_edges_list(Edge* edges_head)
 #pragma region SEARCH_PICKUP_POINTS
 
 
-
+/**
+ * \brief Haversine function that measures distance between two points
+ * 
+ * \param lat1
+ * \param lon1
+ * \param lat2
+ * \param lon2
+ * \return 
+ */
 double haversine_distance(double lat1, double lon1, double lat2, double lon2)
 {
     double dlat = (lat2 - lat1) * PI / 180.0;
@@ -238,13 +305,15 @@ double haversine_distance(double lat1, double lon1, double lat2, double lon2)
     double c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
     double distance = EARTH_RADIUS * c;
-    printf("\nDISTANCIA: %f km", distance);
     return distance;
 }
-
-
-
-// Função para encontrar nós dentro de um raio de 5 km de uma determinada latitude e longitude
+/**
+ * \brief When user gives location, searches through the graph for all the nodes within the range of 5km
+ * 
+ * \param nodes_head
+ * \param target_latitude
+ * \param target_longitude
+ */
 void find_nodes_within_radius(Node* nodes_head, double target_latitude, double target_longitude)
 {
     Node* current = nodes_head;
@@ -271,3 +340,104 @@ void find_nodes_within_radius(Node* nodes_head, double target_latitude, double t
 #pragma endregion
 
 
+#pragma region TESTE
+
+
+// Function to find the index of the node with the minimum distance
+int findMinDistanceNode(int* dist, int* visited, int numNodes) {
+    int minDistance = INT_MAX;
+    int minIndex = -1;
+
+    for (int i = 0; i < numNodes; i++) {
+        if (!visited[i] && dist[i] < minDistance) {
+            minDistance = dist[i];
+            minIndex = i;
+        }
+    }
+
+    return minIndex;
+}
+
+// Function to print the shortest path
+void printShortestPath(int parent[], int node) {
+    if (parent[node] == -1) {
+        printf("%d ", node);
+        return;
+    }
+
+    printShortestPath(parent, parent[node]);
+    printf("%d ", node);
+}
+
+// Function to execute the Dijkstra's algorithm
+void dijkstra(Node* graph, int source) {
+    int numNodes = 0;
+    Node* temp = graph;
+    while (temp != NULL) {
+        numNodes++;
+        temp = temp->next;
+    }
+
+    int* dist = malloc(numNodes * sizeof(int));
+    int* visited = malloc(numNodes * sizeof(int));
+    int* parent = malloc(numNodes * sizeof(int));
+
+    for (int i = 0; i < numNodes; i++) {
+        dist[i] = INT_MAX;
+        visited[i] = 0;
+        parent[i] = -1;
+    }
+
+    dist[source] = 0;
+
+    for (int count = 0; count < numNodes - 1; count++) {
+        int u = -1;
+        int minDistance = INT_MAX;
+
+        for (int i = 0; i < numNodes; i++) {
+            if (!visited[i] && dist[i] < minDistance) {
+                minDistance = dist[i];
+                u = i;
+            }
+        }
+
+        if (u == -1)
+            break;
+
+        visited[u] = 1;
+
+        temp = graph;
+        while (temp != NULL && temp->idNode != u)
+            temp = temp->next;
+
+        if (temp != NULL) {
+            Edge* edge = temp->Adj;
+            while (edge != NULL) {
+                int v = edge->destination;
+                if (!visited[v] && dist[u] != INT_MAX && dist[u] + edge->distance < dist[v]) {
+                    dist[v] = dist[u] + edge->distance;
+                    parent[v] = u;
+                }
+                edge = edge->next;
+            }
+        }
+    }
+
+    printf("Node\tDistance\tPath\n");
+    for (int i = 0; i < numNodes; i++) {
+        printf("%d\t%d\t\t", i, dist[i]);
+        int node = i;
+        while (node != -1) {
+            printf("%d ", node);
+            node = parent[node];
+        }
+        printf("\n");
+    }
+
+    free(dist);
+    free(visited);
+    free(parent);
+}
+
+
+#pragma endregion

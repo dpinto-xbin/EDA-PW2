@@ -34,11 +34,14 @@ int main()
 
 	//print_clients(clients_head);
 	print_nodes(nodes_head);
-	//list_nodes_with_edges(nodes_head);
+	list_nodes_with_edges(nodes_head);
 	//print_transports(transports_head);
 
-	find_nodes_within_radius(nodes_head, lat, lon);
+	//find_nodes_within_radius(nodes_head, lat, lon);
 	//haversine_distance(lat,lon, 41.536719, -8.627301);
+
+	//int sourceNode = 1;
+	//dijkstra(nodes_head, sourceNode);
 
 
 	// FREE DLL
