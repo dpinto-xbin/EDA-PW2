@@ -13,11 +13,17 @@ Our approach:
   ![STRUCT GRAPH](https://github.com/dpinto-xbin/EDA-PW2/assets/90906538/29a14f25-1e4d-4728-8e9a-e1461d20ae90)
   
   
-| Nodes  | Heads |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+| Nodes  | Latitude | Longitude |
+| ------------- | ------------- | ------------- |
+| A  | 41.536719  | -8.627301  |
+| B  | 41.537748  | -8.622770  |
+| C  | 41.537628  | -8.621906  |
+| D  | 41.531540  | -8.618960  |
+| E  | 41.452470  | -8.562170  |
+| F  | 41.494751  | -8.644610  |
 
+  ### Non-oriented graph with weights (distance)
+![GRAPH](https://github.com/dpinto-xbin/EDA-PW2/assets/90906538/1cf5e227-786d-46a6-b7cf-ff8eb017ebb3)
 
 
 </details>
