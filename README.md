@@ -26,18 +26,8 @@ Our approach:
 
 <summary>Second Point</summary>
 
-### "Armazenamento/leitura dos dados em ficheiro de texto (valores de simulação) e binários (preservar dados)."
-
-Our approach:
-
-  ![STRUCT GRAPH](https://github.com/dpinto-xbin/EDA-PW2/assets/90906538/29a14f25-1e4d-4728-8e9a-e1461d20ae90)
+### "Armazenamento/leitura dos dados em ficheiro de texto (valores de simulação) e binários (preservar dados)."  
   
-  
-| Nodes  | Heads |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
-
 
 ```
 void writeNodeToFile(Node* nodes_head) {
