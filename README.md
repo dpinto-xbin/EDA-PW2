@@ -1,12 +1,19 @@
 # EDA-PW2
 
-PRATICAL WORK PHASE 2
+### Autors: 
+Diogo Pinto & Ricardo Cruz
+
+# Course: EDA2
+
+
+
+### Phase 2 - Objectives
 
 <details>
 
-<summary>First Point</summary>
+<summary>1</summary>
 
-### "Definição de uma estrutura de dados dinâmica para representação da localização de um conjunto de clientes e meios de mobilidade elétrica, recorrendo a um grafo;"
+# Definição de uma estrutura de dados dinâmica para representação da localização de um conjunto de clientes e meios de mobilidade elétrica, recorrendo a um grafo.
 
 Our approach:
 
@@ -30,11 +37,17 @@ Our approach:
 
 <details>
 
-<summary>Second Point</summary>
+<summary>2.1</summary>
 
-### "Armazenamento/leitura dos dados em ficheiro de texto (valores de simulação) e binários (preservar dados)."  
+# Armazenamento/leitura dos dados em ficheiro de texto (valores de simulação) e binários (preservar dados).
+  
+  Reading from a text file:
+  
+  We use fgets(), you can check on Pickups.c the region READ.
+
   
 
+  Saving to a binary file:
 ```
 void writeNodeToFile(Node* nodes_head) {
     FILE* file = fopen("nodes.bin", "wb");
@@ -46,9 +59,35 @@ void writeNodeToFile(Node* nodes_head) {
     fclose(file);
 }
 ```
-
+This way the graph is saved with all nodes and edges.
 
 </details>
+
+
+<details>
+  <summary>2.2</summary>
+  
+  # Dado a localização de um cliente, listar os meios de mobilidade elétrica de um determinado tipo existentes num determinado raio.
+  
+ Given the graph and the data we have, wich is latitude and longitude, we decided to use the **Haversine Formula**.
+  This way we calculate the distance of two different points, the client location versus the pickup points locations.
+  
+  Here's the formula:
+  
+<img width="439" alt="27240436-e9a459da-52d4-11e7-8f84-f96d0b312859" src="https://github.com/dpinto-xbin/EDA-PW2/assets/90906538/ed93265a-7791-4012-9d54-03ecfc0eaf70">
+
+  With **math.h** we are able to use the **Haversine Formula**.
+  
+  ```mermaid
+flowchart TD
+    A[Graph] -->B(Select node with latitude and longitude)
+    B --> C{Haversine and if distance is <= 5km}
+    C --> D[Node ID]
+    C -->E[Location]
+    C --> F[Distance]
+```
+  
+  </details>
 
 
 
