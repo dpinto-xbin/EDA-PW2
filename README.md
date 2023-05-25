@@ -89,6 +89,9 @@ flowchart TD
     C --> F[Distance]
 ```
   
+  **In the middle of the process, we consult (listTransportsByLocation at Pickups.c) the transports double linked list and with the location and status equal to available (4) we can list the nearest pick up points with available transports.**
+  
+  
   </details>
   
 
