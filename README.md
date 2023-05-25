@@ -3,11 +3,13 @@
 ### Autors: 
 Diogo Pinto & Ricardo Cruz
 
-# Course: EDA2
+### Course: EDA2
 
 
 
-### Phase 2 - Objectives
+# Phase 2 - Objectives
+
+### Completed
 
 <details>
 
@@ -88,9 +90,26 @@ flowchart TD
 ```
   
   </details>
+  
 
+  
+  ### Dijkstra
+  
   <details>
-  <summary>3</summary> 
+  <summary>3</summary>
+    
+    Using the Dijkstra its possible to find the shortest path between nodes.
+    
+  - [x] List all the transports and their location ID with battery under 50%
+  - [ ] Count the number of nodes in the graph
+  - [ ] Find the nodes with the specified IDs
+  - [ ] Set the distance of the starting node to 0
+  - [ ] Find the unvisited node with the smallest current distance
+  - [ ] If there are no more unvisited nodes, exit the loop
+  - [ ] Check if the current node is one of the required nodes and all required nodes have been visited
+  - [ ] Update the distances of the neighboring nodes
+  - [ ] Check if all required nodes have been visited
+  - [ ] If all required nodes have been visited, print the shortest path
     
   </details>
 
