@@ -2,7 +2,7 @@
  * \file   main.c
  * \brief  
  * 
- * \author Diogo
+ * \author Diogo Pinto & Ricardo Cruz
  * \date   March 2023
  *********************************************************************/
 #include <stdlib.h>
@@ -22,6 +22,7 @@ int main()
 	Transports* transports_head = NULL;
 	Prices* prices_head = NULL;
 
+	// Client current location
 	double lat = 41.535610;
 	double lon = -8.627301;
 
@@ -30,21 +31,23 @@ int main()
 	transports_head = read_transports_from_file(); // Reads transports
 	nodes_head = read_nodes_from_file(); // Reads nodes
 	edges_head = read_edges_from_file(nodes_head); // Reads edges and adds on nodes
-	prices_head = read_prices_from_file();
+	prices_head = read_prices_from_file(); // Reads prices
 
 	//print_clients(clients_head);
-	print_nodes(nodes_head);
-	list_nodes_with_edges(nodes_head);
+	//print_nodes(nodes_head);
+	//list_nodes_with_edges(nodes_head);
 	//print_transports(transports_head);
 
-	//find_nodes_within_radius(nodes_head, lat, lon);
-	//haversine_distance(lat,lon, 41.536719, -8.627301);
+	find_nodes_within_radius(nodes_head, lat, lon, transports_head);
 
-	//int sourceNode = 1;
-	//dijkstra(nodes_head, sourceNode);
+	//find_transports_battery(transports_head);
+	
+
+	// Writes nodes to binary file
+	writeNodeToFile(nodes_head);
 
 
-	// FREE DLL
+	// Free memory
 	free_clients_list(clients_head);
 	free_edges_list(edges_head);
 	free_nodes_list(nodes_head);

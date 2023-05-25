@@ -2,7 +2,7 @@
  * \file   Clients.c
  * \brief  
  * 
- * \author Diogo
+ * \author Diogo Pinto & Ricardo Cruz
  * \date   March 2023
  *********************************************************************/
 #pragma warning(disable:4996)
@@ -16,6 +16,14 @@
 #pragma endregion
 
 #pragma region ADD_CLIENT
+
+/**
+ * \brief Add client on clients dll
+ * 
+ * \param clients_head
+ * \param new_client
+ * \return 
+ */
 
 Clients* add_client(Clients* clients_head, Client new_client)
 {
@@ -74,6 +82,11 @@ bool add_node(Clients** clients_head, Clients* new_node)
 #pragma endregion
 
 #pragma region LIST_CLIENTS
+/**
+ * \brief List clients dll
+ * 
+ * \param clients_head
+ */
 void print_clients(Clients* clients_head)
 {
     Clients* current_node = clients_head;
@@ -91,6 +104,11 @@ void print_clients(Clients* clients_head)
 #pragma endregion
 
 #pragma region FREE_CLIENTS
+/**
+ * \brief Free clients dll
+ * 
+ * \param clients_head
+ */
 void free_clients_list(Clients* clients_head)
 {
     Clients* current_node = clients_head;
@@ -104,6 +122,11 @@ void free_clients_list(Clients* clients_head)
 #pragma endregion
 
 #pragma region READ_FILE_CLIENTS
+/**
+ * \brief Reads clients from text file
+ * 
+ * \return 
+ */
 Clients* read_clients_from_file()
 {
     Clients* clients_head = NULL;

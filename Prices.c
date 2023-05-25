@@ -2,7 +2,7 @@
  * \file   Prices.c
  * \brief  
  * 
- * \author Diogo
+ * \author Diogo Pinto & Ricardo Cruz
  * \date   May 2023
  *********************************************************************/
 
@@ -18,7 +18,11 @@
 #pragma endregion
 
 #pragma region READ_PRICES_FILE
-
+/**
+ * \brief Reads prices from text file
+ * 
+ * \return 
+ */
 Prices* read_prices_from_file()
 {
     Prices* prices_head = NULL;

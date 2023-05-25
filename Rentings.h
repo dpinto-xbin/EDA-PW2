@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   Rentings.h
+ * \brief  
+ * 
+ * \author Diogo Pinto & Ricardo Cruz
+ * \date   May 2023
+ *********************************************************************/
 #define DATE_SIZE 100
 
 #pragma region GRAPH_STRUCT
@@ -41,6 +48,15 @@ typedef struct Pickup {
 
 #pragma endregion
 
+#pragma region SHORTEST_PATH_STRUCT
+typedef struct {
+	float distance;
+	int previous;
+	int visited;
+} ShortestPathInfo;
+
+#pragma endregion
+
 #pragma region FUNCTIONS
 
 Node* read_nodes_from_file();
@@ -52,10 +68,8 @@ void list_nodes_with_edges(Node* nodes_head);
 void free_edges_list(Edge* edges_head);
 void free_nodes_list(Node* nodes_head);
 double haversine_distance(double lat1, double lon1, double lat2, double lon2);
-void find_nodes_within_radius(Node* nodes_head, double target_latitude, double target_longitude);
-
-void dijkstra(Node* graph, int source);
-void printShortestPath(int parent[], int node);
-int findMinDistanceNode(int* dist, int* visited, int numNodes);
+//void listTransportsByLocation(Transports* transports_head, int locationID);
+//void find_nodes_within_radius(Node* nodes_head, double target_latitude, double target_longitude, Transports* transports_head);
 
 #pragma endregion
+

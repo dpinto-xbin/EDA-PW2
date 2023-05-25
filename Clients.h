@@ -1,8 +1,8 @@
 /*****************************************************************//**
  * \file   Clients.h
- * \brief  
+ * \brief 
  * 
- * \author Diogo
+ * \author Diogo Pinto & Ricardo Cruz
  * \date   March 2023
  *********************************************************************/
 #include <stdbool.h>

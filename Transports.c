@@ -2,7 +2,7 @@
  * \file   Transports.c
  * \brief  
  * 
- * \author Diogo
+ * \author Diogo Pinto & Ricardo Cruz
  * \date   May 2023
  *********************************************************************/
 
@@ -18,7 +18,13 @@
 #pragma endregion
 
 #pragma region ADD_TRANSPORT
-
+/**
+ * \brief Adds a transport struct to transports list
+ * 
+ * \param transports_head
+ * \param new_transport
+ * \return 
+ */
 Transports* add_transport(Transports* transports_head, Transport new_transport)
 {
     Transports* new_node = (Transports*)malloc(sizeof(Transports));
@@ -54,6 +60,11 @@ Transports* add_transport(Transports* transports_head, Transport new_transport)
 
 #pragma region READ_TRANSPORTS_FILE
 
+/**
+ * \brief Reads transports from file
+ * 
+ * \return 
+ */
 Transports* read_transports_from_file()
 {
     Transports* transports_head = NULL;
@@ -102,7 +113,11 @@ Transports* read_transports_from_file()
 #pragma endregion
 
 #pragma region LIST_TRANSPORTS
-
+/**
+ * \brief Lists all the transports
+ * 
+ * \param transports_head
+ */
 void print_transports(Transports* transports_head)
 {
     if (transports_head == NULL)
@@ -122,6 +137,35 @@ void print_transports(Transports* transports_head)
         printf("Status: %d\n", current->t.status);
         printf("Location: %d\n", current->t.location);
         printf("-----------------------\n");
+
+        current = current->next;
+    }
+}
+
+
+#pragma endregion
+
+#pragma region TRANSPORTS_UNDER_50
+
+/**
+ * \brief Lists all the transports with battery under 50% and their location ID (NODE ID)
+ * 
+ * \param transports_head
+ */
+
+void find_transports_battery(Transports* transports_head)
+{
+    Transports* current = transports_head;
+
+    while (current != NULL)
+    {
+
+
+        if (current->t.battery <= 50.0) // Check if battery is lower than 50%
+        {
+            printf("Transport ID: %d\n", current->t.idTransport);
+            printf("Node ID: %d\n", current->t.location);
+        }
 
         current = current->next;
     }

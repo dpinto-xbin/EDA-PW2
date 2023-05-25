@@ -2,7 +2,7 @@
  * \file   Transports.h
  * \brief  
  * 
- * \author Diogo
+ * \author Diogo Pinto & Ricardo Cruz
  * \date   March 2023
  *********************************************************************/
 
@@ -18,7 +18,7 @@ typedef struct Transport {
     float battery;
     float autonomy;
     int status; // 1 - Maintenance | 2 - MIA (Missing in Action) | 3 - Rented | 4 - Available |
-    int location;
+    int location; // Node ID
 
 } Transport;
 #pragma endregion
@@ -38,4 +38,7 @@ typedef struct Transports {
 Transports* read_transports_from_file();
 Transports* add_transport(Transports* transports_head, Transport new_transport);
 void print_transports(Transports* transports_head);
+
+void find_transports_battery(Transports* transports_head);
+
 #pragma endregion

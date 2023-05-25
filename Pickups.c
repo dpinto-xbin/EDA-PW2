@@ -2,7 +2,7 @@
  * \file   Pickups.c
  * \brief  
  * 
- * \author Diogo
+ * \author Diogo Pinto & Ricardo Cruz
  * \date   May 2023
  *********************************************************************/
 
@@ -13,11 +13,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "Transports.h"
 #include "Rentings.h"
 #define MAX_LINE_SIZE 100
 #include <math.h>
 #define PI 3.14159265358979323846
-#define EARTH_RADIUS 6371.0 // Raio médio da Terra em quilômetros
+#define EARTH_RADIUS 6371.0 // Value obtained in Google - Unit: km
+#define MAX_NODES 10
 #pragma endregion
 
 #pragma region READ_NODES
@@ -256,6 +258,11 @@ void list_nodes_with_edges(Node* nodes_head)
 #pragma endregion
 
 #pragma region FREE_NODES
+/**
+ * \brief Clear memory of nodes
+ * 
+ * \param nodes_head
+ */
 void free_nodes_list(Node* nodes_head)
 {
     Node* current_node = nodes_head;
@@ -269,6 +276,11 @@ void free_nodes_list(Node* nodes_head)
 #pragma endregion
 
 #pragma region FREE_EDGES
+/**
+ * \brief Clear memory of edges
+ * 
+ * \param edges_head
+ */
 void free_edges_list(Edge* edges_head)
 {
     Node* current_edge = edges_head;
@@ -279,6 +291,39 @@ void free_edges_list(Edge* edges_head)
         current_edge = next_edge;
     }
 }
+#pragma endregion
+
+#pragma region SEARCH_TRANSPORT_BY_LOCATION
+/**
+ * \brief Uses locationID to list all transports with status 4
+ * 
+ * \param transports_head
+ * \param locationID
+ */
+void listTransportsByLocation(Transports* transports_head, int locationID) {
+
+    Transports* current = transports_head;
+    int sum = 0;
+    printf("\nTransports available:\n");
+    while (current != NULL)
+    {
+        if (current->t.location == locationID && current->t.status == 4) {
+
+            printf("Transport ID: %d\n", current->t.idTransport);
+            printf("Type: %d\n", current->t.type);
+            printf("Battery: %.2f\n", current->t.battery);
+            printf("Autonomy: %.2f\n", current->t.autonomy);
+            printf("\n");
+            sum++;
+        }
+        current = current->next;
+    }
+
+    if (sum == 0) {
+        printf("No available transports!\n");
+    }
+}
+
 #pragma endregion
 
 #pragma region SEARCH_PICKUP_POINTS
@@ -314,7 +359,7 @@ double haversine_distance(double lat1, double lon1, double lat2, double lon2)
  * \param target_latitude
  * \param target_longitude
  */
-void find_nodes_within_radius(Node* nodes_head, double target_latitude, double target_longitude)
+void find_nodes_within_radius(Node* nodes_head, double target_latitude, double target_longitude, Transports* transports_head)
 {
     Node* current = nodes_head;
 
@@ -324,12 +369,18 @@ void find_nodes_within_radius(Node* nodes_head, double target_latitude, double t
         double distance = haversine_distance(target_latitude, target_longitude, current->latitude, current->longitude);
 
 
-        if (distance <= 5.0) // Verificar se a distância está dentro do raio de 5 km
+        if (distance <= 5.0) // Check if distance is equal or lower than 5km
         {
+            printf("------------------------------------------------------\n");
             printf("Node ID: %d\n", current->idNode);
-            printf("Latitude: %f\n", current->latitude);
-            printf("Longitude: %f\n", current->longitude);
+            //printf("Latitude: %f\n", current->latitude);
+            //printf("Longitude: %f\n", current->longitude);
             printf("Distance: %f km\n\n", distance);
+
+            listTransportsByLocation(transports_head, current->idNode);
+
+            printf("------------------------------------------------------\n");
+
         }
 
         current = current->next;
@@ -340,104 +391,24 @@ void find_nodes_within_radius(Node* nodes_head, double target_latitude, double t
 #pragma endregion
 
 
-#pragma region TESTE
+#pragma region SAVE_TO_BINARY_FILE
 
+/**
+ * \brief Saves graph to binary file
+ * 
+ * \param nodes_head
+ */
 
-// Function to find the index of the node with the minimum distance
-int findMinDistanceNode(int* dist, int* visited, int numNodes) {
-    int minDistance = INT_MAX;
-    int minIndex = -1;
+void writeNodeToFile(Node* nodes_head) {
+    FILE* file = fopen("nodes.bin", "wb");
 
-    for (int i = 0; i < numNodes; i++) {
-        if (!visited[i] && dist[i] < minDistance) {
-            minDistance = dist[i];
-            minIndex = i;
-        }
+    Node* current = nodes_head;
+    while (current != NULL) {
+        fwrite(current, sizeof(Node), 1, file);
+        current = current->next;
     }
 
-    return minIndex;
+    fclose(file);
 }
-
-// Function to print the shortest path
-void printShortestPath(int parent[], int node) {
-    if (parent[node] == -1) {
-        printf("%d ", node);
-        return;
-    }
-
-    printShortestPath(parent, parent[node]);
-    printf("%d ", node);
-}
-
-// Function to execute the Dijkstra's algorithm
-void dijkstra(Node* graph, int source) {
-    int numNodes = 0;
-    Node* temp = graph;
-    while (temp != NULL) {
-        numNodes++;
-        temp = temp->next;
-    }
-
-    int* dist = malloc(numNodes * sizeof(int));
-    int* visited = malloc(numNodes * sizeof(int));
-    int* parent = malloc(numNodes * sizeof(int));
-
-    for (int i = 0; i < numNodes; i++) {
-        dist[i] = INT_MAX;
-        visited[i] = 0;
-        parent[i] = -1;
-    }
-
-    dist[source] = 0;
-
-    for (int count = 0; count < numNodes - 1; count++) {
-        int u = -1;
-        int minDistance = INT_MAX;
-
-        for (int i = 0; i < numNodes; i++) {
-            if (!visited[i] && dist[i] < minDistance) {
-                minDistance = dist[i];
-                u = i;
-            }
-        }
-
-        if (u == -1)
-            break;
-
-        visited[u] = 1;
-
-        temp = graph;
-        while (temp != NULL && temp->idNode != u)
-            temp = temp->next;
-
-        if (temp != NULL) {
-            Edge* edge = temp->Adj;
-            while (edge != NULL) {
-                int v = edge->destination;
-                if (!visited[v] && dist[u] != INT_MAX && dist[u] + edge->distance < dist[v]) {
-                    dist[v] = dist[u] + edge->distance;
-                    parent[v] = u;
-                }
-                edge = edge->next;
-            }
-        }
-    }
-
-    printf("Node\tDistance\tPath\n");
-    for (int i = 0; i < numNodes; i++) {
-        printf("%d\t%d\t\t", i, dist[i]);
-        int node = i;
-        while (node != -1) {
-            printf("%d ", node);
-            node = parent[node];
-        }
-        printf("\n");
-    }
-
-    free(dist);
-    free(visited);
-    free(parent);
-}
-
 
 #pragma endregion
