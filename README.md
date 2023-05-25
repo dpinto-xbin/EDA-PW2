@@ -9,4 +9,4 @@ Our approach:
 
 Where:
 
-![STRUCT GRAPH](https://github.com/dpinto-xbin/EDA-PW2/assets/90906538/205ed156-2f38-437c-a55e-f9870245ec8b)
+![STRUCT GRAPH](https://github.com/dpinto-xbin/EDA-PW2/assets/90906538/29a14f25-1e4d-4728-8e9a-e1461d20ae90)
